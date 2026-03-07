@@ -1,7 +1,7 @@
 IR:
   tkg_path: "./checkpoints/regcn/IR/REGCN"
   data_path: "./data/"
-  base_model: "YOUR_BASE_MODEL_PATH" # Path to your base model, e.g., Llama-2-7b-chat-hf
+  base_model: "/home/rl_gaming/models/Llama-2-7b-chat-hf"
 
   batch_size: 128
   batch_size_train: 32 # the batch size for training
@@ -26,7 +26,7 @@ IR:
 IS:
   tkg_path: "./checkpoints/regcn/IS/REGCN"
   data_path: "./data/"
-  base_model: "YOUR_BASE_MODEL_PATH" # Path to your base model, e.g., Llama-2-7b-chat-hf
+  base_model: "/home/rl_gaming/models/Llama-2-7b-chat-hf"
 
   batch_size: 128
   batch_size_train: 32 # the batch size for training
@@ -52,7 +52,7 @@ IS:
 EG:
   tkg_path: "./checkpoints/regcn/EG/REGCN"
   data_path: "./data/"
-  base_model: "YOUR_BASE_MODEL_PATH" # Path to your base model, e.g., Llama-2-7b-chat-hf
+  base_model: "/home/rl_gaming/models/Llama-2-7b-chat-hf"
 
   batch_size: 128
   batch_size_train: 32 # the batch size for training

@@ -1,0 +1,9 @@
+hitrate: 0.8511
+hitrate: 0.8188
+hitrate: 0.7421
+hitrate: 0.8773
+hitrate: 0.8432
+hitrate: 0.7726
+hitrate: 0.8111
+hitrate: 0.7692
+hitrate: 0.6755

@@ -85,7 +85,7 @@ class TKGLLMEVO(nn.Module):
         self.tokenizer.add_prefix_space = False         
         self.llama_model = AutoModelForCausalLM.from_pretrained(
             self.llama_model_path,
-            load_in_8bit=True,
+            torch_dtype=torch.bfloat16,
             device_map=self.device,
         )
 

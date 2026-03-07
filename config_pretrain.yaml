@@ -9,7 +9,7 @@ IR:
   n_bases: 100 # number of weight blocks for each relation
   n_layers: 2 # number of propagation layers 
 
-  n_epochs: 30 # number of training epochs
+  n_epochs: 0 # number of training epochs
   patience: 5 # early stop patience
   lr: 0.001 # learning rate
   wd: 1.0e-6 # weight decay
@@ -42,7 +42,7 @@ IS:
   n_bases: 100 # number of weight blocks for each relation
   n_layers: 2 # number of propagation layers 
 
-  n_epochs: 30 # number of training epochs
+  n_epochs: 0 # number of training epochs
   patience: 5 # early stop patience
   lr: 0.001 # learning rate
   wd: 1.0e-6 # weight decay
@@ -74,7 +74,7 @@ EG:
   n_bases: 100 # number of weight blocks for each relation
   n_layers: 2 # number of propagation layers 
 
-  n_epochs: 30 # number of training epochs
+  n_epochs: 0 # number of training epochs
   patience: 5 # early stop patience
   lr: 0.001 # learning rate
   wd: 1.0e-6 # weight decay
