@@ -22,7 +22,6 @@ def generate_prompt(event, options):
 def test_raw(conf, dataset, k, e2i, r2i):
     device = conf["device"]
     
-    # Load reverse mappings securely
     i2e = {int(v): k for k, v in e2i.items()}
     i2r = {int(v): k for k, v in r2i.items()}
     
@@ -50,19 +49,14 @@ def test_raw(conf, dataset, k, e2i, r2i):
 
     with torch.no_grad():
         for event_id, history, candidates_id in tqdm(dataset.test_loader):
-            for i in range(len(history)): # Batch processing, batch = len(history)
-                # Event ID is [Subject, Relation, Object, Timestamp, ID]
-                sub_id, rel_id, obj_id, timestamp = event_id[i, 0].item(), event_id[i, 1].item(), event_id[i, 2].item(), event_id[i, 3].item()
-                
-                # Fetch English strings
-                event_text = [i2e[sub_id], i2r[rel_id], i2e[obj_id], str(timestamp)]
+            for i in range(len(history)):
+                sub_id, rel_id, obj_id = event_id[i, 0].item(), event_id[i, 1].item(), event_id[i, 2].item()
+                event_text = [i2e[sub_id], i2r[rel_id], i2e[obj_id], str(event_id[i, 3].item())]
                 true_label_text = i2e[obj_id]
                 
-                # Get Candidate English Strings
                 cand_opts_ids = candidates_id[i, 1:].tolist()
                 cand_opts_text = [i2e[cid] for cid in cand_opts_ids]
                 
-                # Format
                 options = []
                 c_idx = random.randint(0, len(cand_opts_text))
                 cand_opts_text.insert(c_idx, true_label_text)
@@ -97,6 +91,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dataset", type=str, required=True, help="dataset")
     parser.add_argument("-g", "--gpu", type=str, default="0", help="gpu")
+    parser.add_argument("-k", "--k_values", type=str, default="3,5,9", help="comma-separated K values")
     args = parser.parse_args()
 
     conf = yaml.safe_load(open("./config.yaml"))[args.dataset]
@@ -106,19 +101,19 @@ def main():
     conf["device"] = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     conf["from_pretrain"] = False
 
-    # Load English mappings
     data_path = f"./data/{args.dataset}"
     with open(f"{data_path}/entity2id.json", "r") as f:
         e2i = json.load(f)
     with open(f"{data_path}/relation2id.json", "r") as f:
         r2i = json.load(f)
 
-    for k in [3, 5, 9]:
+    k_values = [int(x) for x in args.k_values.split(",")]
+
+    for k in k_values:
         conf["k"] = k
         conf["num_candidate"] = k
         conf["train_sample"] = False
         
-        # Load test set
         dataset = Datasets(conf)
         conf["num_ent"] = dataset.num_ent
         conf["num_rel"] = dataset.num_rel
