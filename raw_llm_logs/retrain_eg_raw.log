@@ -1,0 +1,143 @@
+nohup: ignoring input
+/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/cuda_setup/main.py:166: UserWarning: Welcome to bitsandbytes. For bug reports, please run
+
+python -m bitsandbytes
+
+
+  warn(msg)
+/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/cuda_setup/main.py:166: UserWarning: /home/rl_gaming/miniconda3/envs/tgl did not contain ['libcudart.so', 'libcudart.so.11.0', 'libcudart.so.12.0'] as expected! Searching further paths...
+  warn(msg)
+/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/cuda_setup/main.py:166: UserWarning: /home/rl_gaming/local/lib:/home/rl_gaming/local/lib: did not contain ['libcudart.so', 'libcudart.so.11.0', 'libcudart.so.12.0'] as expected! Searching further paths...
+  warn(msg)
+False
+
+===================================BUG REPORT===================================
+================================================================================
+The following directories listed in your path were found to be non-existent: {PosixPath('/home/rl_gaming/.antigravity-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-6fd83ee09a4be6ce.txt')}
+The following directories listed in your path were found to be non-existent: {PosixPath('/DATA1/rl_gaming/hari/huggingface/datasets')}
+The following directories listed in your path were found to be non-existent: {PosixPath('/usr/share/lmod/lmod/share/man')}
+The following directories listed in your path were found to be non-existent: {PosixPath('/usr/modulefiles')}
+The following directories listed in your path were found to be non-existent: {PosixPath('() {  eval $($LMOD_DIR/ml_cmd "$@")\n}')}
+CUDA_SETUP: WARNING! libcudart.so not found in any environmental path. Searching in backup paths...
+DEBUG: Possible options found for libcudart.so: {PosixPath('/usr/local/cuda/lib64/libcudart.so')}
+CUDA SETUP: PyTorch settings found: CUDA_VERSION=128, Highest Compute Capability: 9.0.
+CUDA SETUP: To manually override the PyTorch CUDA version please see:https://github.com/TimDettmers/bitsandbytes/blob/main/how_to_use_nonpytorch_cuda.md
+CUDA SETUP: Required library version not found: libbitsandbytes_cuda128.so. Maybe you need to compile it from source?
+CUDA SETUP: Defaulting to libbitsandbytes_cpu.so...
+
+================================================ERROR=====================================
+CUDA SETUP: CUDA detection failed! Possible reasons:
+1. You need to manually override the PyTorch CUDA version. Please see: "https://github.com/TimDettmers/bitsandbytes/blob/main/how_to_use_nonpytorch_cuda.md
+2. CUDA driver not installed
+3. CUDA not installed
+4. You have multiple conflicting CUDA libraries
+5. Required library not pre-compiled for this bitsandbytes release!
+CUDA SETUP: If you compiled from source, try again with `make CUDA_VERSION=DETECTED_CUDA_VERSION` for example, `make CUDA_VERSION=113`.
+CUDA SETUP: The CUDA version for the compile might depend on your conda install. Inspect CUDA version via `conda list | grep cuda`.
+================================================================================
+
+CUDA SETUP: Something unexpected happened. Please compile from source:
+git clone https://github.com/TimDettmers/bitsandbytes.git
+cd bitsandbytes
+CUDA_VERSION=128
+python setup.py install
+CUDA SETUP: Setup Failed!
+Traceback (most recent call last):
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1364, in _get_module
+    return importlib.import_module("." + module_name, self.__name__)
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/integrations/integration_utils.py", line 71, in <module>
+    from ..trainer_callback import ProgressCallback, TrainerCallback  # noqa: E402
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/trainer_callback.py", line 27, in <module>
+    from .training_args import TrainingArguments
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/training_args.py", line 70, in <module>
+    from accelerate.state import AcceleratorState, PartialState
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/accelerate/__init__.py", line 3, in <module>
+    from .accelerator import Accelerator
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/accelerate/accelerator.py", line 35, in <module>
+    from .checkpointing import load_accelerator_state, load_custom_state, save_accelerator_state, save_custom_state
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/accelerate/checkpointing.py", line 24, in <module>
+    from .utils import (
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/accelerate/utils/__init__.py", line 131, in <module>
+    from .bnb import has_4bit_bnb_layers, load_and_quantize_model
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/accelerate/utils/bnb.py", line 42, in <module>
+    import bitsandbytes as bnb
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/__init__.py", line 6, in <module>
+    from . import cuda_setup, utils, research
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/research/__init__.py", line 1, in <module>
+    from . import nn
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/research/nn/__init__.py", line 1, in <module>
+    from .modules import LinearFP8Mixed, LinearFP8Global
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/research/nn/modules.py", line 8, in <module>
+    from bitsandbytes.optim import GlobalOptimManager
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/optim/__init__.py", line 6, in <module>
+    from bitsandbytes.cextension import COMPILED_WITH_CUDA
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/bitsandbytes/cextension.py", line 20, in <module>
+    raise RuntimeError('''
+RuntimeError: 
+        CUDA Setup failed despite GPU being available. Please run the following command to get more information:
+
+        python -m bitsandbytes
+
+        Inspect the output of the command and see if you can locate CUDA libraries. You might need to add them
+        to your LD_LIBRARY_PATH. If you suspect a bug, please take the information from python -m bitsandbytes
+        and open an issue at: https://github.com/TimDettmers/bitsandbytes/issues
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1364, in _get_module
+    return importlib.import_module("." + module_name, self.__name__)
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/trainer.py", line 41, in <module>
+    from .integrations import (
+  File "<frozen importlib._bootstrap>", line 1075, in _handle_fromlist
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1354, in __getattr__
+    module = self._get_module(self._class_to_module[name])
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1366, in _get_module
+    raise RuntimeError(
+RuntimeError: Failed to import transformers.integrations.integration_utils because of the following error (look up to see its traceback):
+
+        CUDA Setup failed despite GPU being available. Please run the following command to get more information:
+
+        python -m bitsandbytes
+
+        Inspect the output of the command and see if you can locate CUDA libraries. You might need to add them
+        to your LD_LIBRARY_PATH. If you suspect a bug, please take the information from python -m bitsandbytes
+        and open an issue at: https://github.com/TimDettmers/bitsandbytes/issues
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/raid/rl_gaming/TGL-LLM/train_raw_llm.py", line 24, in <module>
+    from transformers import (
+  File "<frozen importlib._bootstrap>", line 1075, in _handle_fromlist
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1354, in __getattr__
+    module = self._get_module(self._class_to_module[name])
+  File "/home/rl_gaming/miniconda3/envs/tgl/lib/python3.10/site-packages/transformers/utils/import_utils.py", line 1366, in _get_module
+    raise RuntimeError(
+RuntimeError: Failed to import transformers.trainer because of the following error (look up to see its traceback):
+Failed to import transformers.integrations.integration_utils because of the following error (look up to see its traceback):
+
+        CUDA Setup failed despite GPU being available. Please run the following command to get more information:
+
+        python -m bitsandbytes
+
+        Inspect the output of the command and see if you can locate CUDA libraries. You might need to add them
+        to your LD_LIBRARY_PATH. If you suspect a bug, please take the information from python -m bitsandbytes
+        and open an issue at: https://github.com/TimDettmers/bitsandbytes/issues
+ERROR conda.cli.main_run:execute(127): `conda run python train_raw_llm.py -d EG -o train` failed. (See above for error)

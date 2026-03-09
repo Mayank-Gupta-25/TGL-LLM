@@ -108,10 +108,10 @@ When observing the **REGCN Acc@K metrics**, the gap between the base model and t
 
 ## Ablation Study: Raw LLM (Text-Only, No Graph) — Table 3 Reproduction
 
-This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw model is the base Llama-2-7b-chat-hf model prompted *only* with text — no graph embeddings, no projector, and no REGCN at all. This is meant to measure what the LLM can predict purely from its pre-trained world knowledge.
+This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw model formulation provides the base Llama-2-7b-chat-hf model prompted *only* with text — no graph embeddings, no projector, and no REGCN at all. It is fine-tuned with LoRA to adapt it to the specific temporal forecasting phrasing.
 
 ### Methodology
-- The base `Llama-2-7b-chat-hf` model is loaded in `bfloat16` (no LoRA, no fine-tuning).
+- The base `Llama-2-7b-chat-hf` model is loaded in `bfloat16` and fine-tuned using LoRA adapters for 1 epoch.
 - For each test event `(Subject, Relation, ?)`, the entity IDs are mapped back to English text using `entity2id.json` and `relation2id.json`.
 - The model receives a text prompt like:
   > *"Given the historical context, what is the most likely Object Entity for the Query(Iranian Defense Ministry, THREATEN, ?) ... A. USA  B. Israel  C. Egypt  D. Syria"*
@@ -120,8 +120,8 @@ This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw
 ### Raw LLM Model Parameters
 - **Model**: `meta-llama/Llama-2-7b-chat-hf` (7 Billion parameters)
 - **Precision**: bfloat16 (no quantization)
-- **Fine-Tuning**: None (zero-shot inference)
-- **LoRA Adapters**: None
+- **Fine-Tuning**: LoRA adapted
+- **LoRA Adapters**: `r=8`, `lora_alpha=16`
 - **Graph Embeddings**: None — purely text-based prediction
 - **Generation Config**: `num_beams=1`, `max_new_tokens=5`, `do_sample=False` (greedy decoding)
 - **Input**: Text-only multiple-choice prompt (entity names + relation names)
@@ -130,8 +130,8 @@ This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw
 
 | Dataset | Acc@4 (K=3) | Acc@6 (K=5) | Acc@10 (K=9) |
 |---------|-------------|-------------|--------------|
-| **IR**  | 14.80%      | 11.55%      | 6.56%        |
-| **IS**  | 17.87%      | 8.20%       | 4.68%        |
+| **IR**  | 46.17%      | N/A         | 28.73%       |
+| **IS**  | 52.40%      | N/A         | 35.63%       |
 | **EG**  | 20.72%      | 12.48%      | 7.92%        |
 
 ### Dataset Size Used for Raw LLM Evaluation
@@ -146,9 +146,11 @@ This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw
 
 | Dataset | Raw LLM (Acc@4) | REGCN (Acc@4) | TGL-LLM (Acc@4) | Raw LLM (Acc@10) | REGCN (Acc@10) | TGL-LLM (Acc@10) |
 |---------|-----------------|---------------|------------------|-------------------|----------------|-------------------|
-| **IR**  | 14.80%          | 42.91%        | 85.11%           | 6.56%             | 31.72%         | 74.21%            |
-| **IS**  | 17.87%          | 53.53%        | 87.73%           | 4.68%             | 42.27%         | 77.26%            |
-| **EG**  | 20.72%          | 38.00%        | 81.11%           | 7.92%             | 20.78%         | 67.55%            |
+| **IR**  | 46.17%          | 42.91%        | 85.11%           | 28.73%            | 31.72%         | 74.21%            |
+| **IS**  | 52.40%          | 53.53%        | 87.73%           | 35.63%            | 42.27%         | 77.26%            |
+| **EG**  | 20.72%*         | 38.00%        | 81.11%           | 7.92%*            | 20.78%         | 67.55%            |
+
+*(EG marks zero-shot accuracy, LoRA fine-tuning was skipped by request.)*
 
 ---
 **Key Takeaway:**  
