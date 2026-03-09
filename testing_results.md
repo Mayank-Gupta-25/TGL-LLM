@@ -102,4 +102,55 @@ To directly compare the baseline REGCN against the final TGL-LLM model, we also 
 **Summary of findings:** 
 As expected, accuracy scales inversely with the number of candidate choices. The highest accuracy was observed on the IS (Israel) dataset across all K values, while the EG (Egypt) dataset proved the most challenging for the model. 
 
-When observing the **REGCN Acc@K metrics**, the gap between the base model and the fine-tuned TGL-LLM is massive. For example, on the IR dataset at K=3, the base REGCN achieves `42.91%`, whereas the final TGL-LLM achieves `85.11%` line. The performance is highly robust overall, validating the TGL-LLM hybrid tokenization approach and existing checkpoints correctly reproduce the paper's claimed capabilities. The baseline REGCN evaluation further confirms that the graph embeddings themselves correctly isolate historical patterns before reaching the LLM.
+When observing the **REGCN Acc@K metrics**, the gap between the base model and the fine-tuned TGL-LLM is massive. For example, on the IR dataset at K=3, the base REGCN achieves `42.91%`, whereas the final TGL-LLM achieves `85.11%`. The baseline REGCN evaluation confirms that the graph embeddings themselves correctly isolate historical patterns before reaching the LLM.
+
+---
+
+## Ablation Study: Raw LLM (Text-Only, No Graph) — Table 3 Reproduction
+
+This section reproduces the **"Raw"** row from **Table 3** of the paper. The Raw model is the base Llama-2-7b-chat-hf model prompted *only* with text — no graph embeddings, no projector, and no REGCN at all. This is meant to measure what the LLM can predict purely from its pre-trained world knowledge.
+
+### Methodology
+- The base `Llama-2-7b-chat-hf` model is loaded in `bfloat16` (no LoRA, no fine-tuning).
+- For each test event `(Subject, Relation, ?)`, the entity IDs are mapped back to English text using `entity2id.json` and `relation2id.json`.
+- The model receives a text prompt like:
+  > *"Given the historical context, what is the most likely Object Entity for the Query(Iranian Defense Ministry, THREATEN, ?) ... A. USA  B. Israel  C. Egypt  D. Syria"*
+- The model generates a response, and we check if the predicted letter matches the correct answer.
+
+### Raw LLM Model Parameters
+- **Model**: `meta-llama/Llama-2-7b-chat-hf` (7 Billion parameters)
+- **Precision**: bfloat16 (no quantization)
+- **Fine-Tuning**: None (zero-shot inference)
+- **LoRA Adapters**: None
+- **Graph Embeddings**: None — purely text-based prediction
+- **Generation Config**: `num_beams=1`, `max_new_tokens=5`, `do_sample=False` (greedy decoding)
+- **Input**: Text-only multiple-choice prompt (entity names + relation names)
+
+### Raw LLM Accuracy Results (Acc@K)
+
+| Dataset | Acc@4 (K=3) | Acc@6 (K=5) | Acc@10 (K=9) |
+|---------|-------------|-------------|--------------|
+| **IR**  | 14.80%      | 11.55%      | 6.56%        |
+| **IS**  | 17.87%      | 8.20%       | 4.68%        |
+| **EG**  | 20.72%      | 12.48%      | 7.92%        |
+
+### Dataset Size Used for Raw LLM Evaluation
+
+| Dataset | Test Events Evaluated | Entities | Relations |
+|---------|-----------------------|----------|-----------|
+| **IR**  | 11,053                | 35,138   | 88        |
+| **IS**  | 56,750                | 36,336   | 88        |
+| **EG**  | 3,812                 | 26,220   | 88        |
+
+### Comparison: Raw LLM vs REGCN vs TGL-LLM (Acc@4 / Acc@10)
+
+| Dataset | Raw LLM (Acc@4) | REGCN (Acc@4) | TGL-LLM (Acc@4) | Raw LLM (Acc@10) | REGCN (Acc@10) | TGL-LLM (Acc@10) |
+|---------|-----------------|---------------|------------------|-------------------|----------------|-------------------|
+| **IR**  | 14.80%          | 42.91%        | 85.11%           | 6.56%             | 31.72%         | 74.21%            |
+| **IS**  | 17.87%          | 53.53%        | 87.73%           | 4.68%             | 42.27%         | 77.26%            |
+| **EG**  | 20.72%          | 38.00%        | 81.11%           | 7.92%             | 20.78%         | 67.55%            |
+
+---
+**Key Takeaway:**  
+The Raw LLM performs close to random chance (25% for 4 choices, 10% for 10 choices), confirming that Llama-2's pre-trained world knowledge alone is insufficient for temporal knowledge graph forecasting. The REGCN graph model provides a significant boost, and the full TGL-LLM pipeline (Graph + LLM) achieves the best results by far.
+
